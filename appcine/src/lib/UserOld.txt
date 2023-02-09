@@ -1,0 +1,156 @@
+<script>
+    import { createEventDispatcher } from "svelte";
+
+
+let users = null;
+let message = null;
+let onEdit = false;
+
+async function getUsers() {
+    const res = await fetch(
+        `http://localhost:8000/users/list`
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+        users = data;
+        message = null;   
+        console.log(users);
+    } else {
+        users = null;
+        message = `Mensagem: ${res.statusText}`;
+    }
+
+    return users;
+}
+
+async function sendForm(e){
+    // envia o formulario no formato json
+    let formData = new FormData(e.target);
+    let data = Object.fromEntries(formData.entries());
+    const res = await fetch('http://localhost:8000/user/create',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    users = JSON.stringify(json);
+}
+
+// editar function to edit and post updated user
+function editar(u){
+    onEdit = true;
+    console.log(u);
+    console.log("Editar");
+    // form to edit and post updated user
+    // <form class="crud" on:submit|preventDefault={editar}>
+    //     <input type="text" name="name" placeholder="User name" required autocomplete="off">
+    //     <input type="text" name="email" placeholder="Email" required autocomplete="off">
+    //     <input type="text" name="password" placeholder="password" required autocomplete="off">
+    //     <input type="submit" value="add">
+    // </form>
+}
+
+
+
+
+// on click on editar function, turn on form to edit and post updated user
+
+
+
+
+// get users
+// async function getUsers() {
+//     const res = await fetch(
+//         `http://localhost:8000/user`
+//     );
+//     const text = await res.json();
+//     if (res.ok) {
+//         return text;
+//     } else {throw new Error(text); }
+// }
+</script>
+
+
+
+<h2>New user</h2>
+
+<!-- <p>{resposta}</p> -->
+
+<form class="crud" on:submit|preventDefault={sendForm}>
+    <input type="text" name="name" placeholder="User name" required autocomplete="off">
+    <input type="text" name="email" placeholder="Email" required autocomplete="off">
+    <input type="text" name="password" placeholder="password" required autocomplete="off">
+    <input type="submit" value="add">
+</form>
+
+<!-- display users list -->
+{#if onEdit}
+    <p>Editar</p>
+    <!-- form to edit and post updated user -->
+    <form class="crud" on:submit|preventDefault={editar}>
+        <input type="text" name="name" placeholder="User name" required autocomplete="off">
+        <input type="text" name="email" placeholder="Email" required autocomplete="off">
+        <input type="text" name="password" placeholder="password" required autocomplete="off">
+        <input type="submit" value="add">
+    </form>
+{:else}
+    {#await getUsers()}
+        <p>Carregando...</p>
+        <!-- console log carregando -->
+        <script>
+            console.log("Carregando...");
+        </script>
+    {:then users}
+        <script>
+            console.log("Carregado");
+            console.log(users);
+        </script>
+
+        <p>{message}</p>
+        <h2>Usuários Cadastrados</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Senha</th>
+                    <th>Editar</th>
+                </tr>
+                {#each users as user}
+                <tr>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.password}</td>
+                    <!-- on click on Editar, open for to edit and post updated user -->
+                    <td><button on:click={editar(u: user)}>Editar</button></td>
+                    <!-- <td><a href="/user/edit/{user.id}">Editar</a></td> -->
+                </tr>
+                {/each}
+            </table>
+
+    {:catch error}
+        <p>{error.message}</p>
+    {/await}
+{/if}
+
+<style>
+    /* css to great table of users */
+    /* table {
+        padding: 5px;
+        border: 1px solid #ccc;
+    } */
+    
+form.crud{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    row-gap: 10px;
+}
+.crud input[type=submit]{
+    justify-self: baseline;
+}
+</style>

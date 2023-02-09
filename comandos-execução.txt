@@ -1,0 +1,26 @@
+BACKEND
+
+1a vez:
+cd pycine
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+com ambiente configurado:
+cd pycine
+source env/bin/activate
+uvicorn main:app --reload
+
+Para acessar a documentação da API, acesse http://localhost:8000/docs
+
+FRONTEND
+
+1a vez:
+cd appcine
+npm install
+npm run dev
+
+com ambiente configurado:
+cd appcine
+npm run dev
