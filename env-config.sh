@@ -3,11 +3,13 @@
 # install python
 echo "Configurando backend..."
 echo "Instalando python..."
+pwd
 sudo apt-get install python3.6
 sudo apt-get install python3-pip
 sudo apt-get install python3-venv
 
 cd ./backend
+pwd
 python3 -m venv venv
 source venv/bin/activate
 export PYTHONPATH=.
@@ -17,8 +19,10 @@ cd..
 
 # install node
 echo "Configurando frontend..."
+pwd
 echo "Instalando node..."
 cd ./frontend
+pwd
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -27,10 +31,12 @@ nvm list-remote
 nvm install v18.14.0
 node -v
 echo "Instalando dependencias frontend..."
+pwd
 npm install
 cd ..
 
 echo "Identificando IP publico..."
+pwd
 public_ip=$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')
 echo "IP publico: $public_ip"
 
@@ -43,6 +49,7 @@ sed -i "s/server_name.*;/server_name $public_ip;/g" $filename
 
 # https://lcalcagni.medium.com/deploy-your-fastapi-to-aws-ec2-using-nginx-aa8aa0d85ec7
 echo "Instalando nginx..."
+pwd
 sudo apt install nginx
 echo "Configurando nginx..."
 cp ./fastapi_nginx /etc/nginx/sites-available/
@@ -51,6 +58,7 @@ sudo service nginx restart
 
 # tornando scripts executaveis
 echo "Tornando executáveis os scripts start-backend.sh e start-frontend.sh..."
+pwd
 chmod +x ./start-backend.sh
 chmod +x ./start-frontend.sh
 
