@@ -15,7 +15,7 @@ source venv/bin/activate
 export PYTHONPATH=.
 echo "Instalando dependencias backend..."
 pip install -r requirements.txt
-cd..
+cd ..
 
 # install node
 echo "Configurando frontend..."
