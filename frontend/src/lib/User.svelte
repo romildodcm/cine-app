@@ -1,11 +1,13 @@
 <script>
+    const API_URL = import.meta.env.VITE_API_URL;
+
     import { onMount } from "svelte";
     let users = [];
     let user = {};
     let edit = false;
 
     onMount(async () => {
-        const res = await fetch("http://localhost:8000/user/list");
+        const res = await fetch(`${API_URL}:8001/user/list`);
         users = await res.json();
     });
 
@@ -19,7 +21,7 @@
     }
 
     async function createUser() {
-        const res = await fetch("http://localhost:8000/user/create", {
+        const res = await fetch(`${API_URL}:8001/user/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -32,29 +34,26 @@
     }
 
     async function updateUser() {
-        const res = await fetch(
-            `http://localhost:8000/user/update/${user.id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(user),
-            }
-        );
+        const res = await fetch(`${API_URL}:8001/user/update/${user.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+        });
 
         // console.log("updateUser");
         // console.log(user);
         // console.log(res.json());
 
         user = {};
-        const resList = await fetch("http://localhost:8000/user/list");
+        const resList = await fetch(`${API_URL}:8001/user/list`);
         users = await resList.json();
         edit = false;
     }
 
     async function deletaUser(id) {
-        const res = await fetch(`http://localhost:8000/user/delete/${id}`, {
+        const res = await fetch(`${API_URL}:8001/user/delete/${id}`, {
             method: "DELETE",
         });
         users = users.filter((u) => u.id !== id);
@@ -108,4 +107,3 @@
         {/each}
     </tbody>
 </table>
-

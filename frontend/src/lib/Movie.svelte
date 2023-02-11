@@ -1,23 +1,22 @@
 <script>
-const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
 
-let promise = getMovies();
-async function getMovies() {
-    const res = await fetch(
-        `${API_URL}:8000/movies`
-    );
-    const text = await res.json();
-    if (res.ok) {
-        return text;
-    } else {throw new Error(text); }
-}
-function handleClick() {
-    promise = getMovies();
-}
+    let promise = getMovies();
+    async function getMovies() {
+        const res = await fetch(`${API_URL}:8001/movies`);
+        const text = await res.json();
+        if (res.ok) {
+            return text;
+        } else {
+            throw new Error(text);
+        }
+    }
+    function handleClick() {
+        promise = getMovies();
+    }
 </script>
-<button on:click={handleClick}>
-list movies
-</button>
+
+<button on:click={handleClick}> list movies </button>
 
 <!--
     get from endpoint /genres
@@ -27,29 +26,27 @@ list movies
 -->
 
 {#await promise}
-<p>...waiting</p>
+    <p>...waiting</p>
 {:then movies}
-
-<div class="table">
-    {#each movies as m }
-        <p><img src="{m.poster_path}"/></p>
-        <!-- <p>{m.id}</p> -->
-        <p>{m.title}</p>
-        <p>{m.genres}</p>
-        <!-- TODO: salvar filme como favorito -->
-        <p>Save</p>
-    {/each}
-</div>
-
+    <div class="table">
+        {#each movies as m}
+            <p><img src={m.poster_path} /></p>
+            <!-- <p>{m.id}</p> -->
+            <p>{m.title}</p>
+            <p>{m.genres}</p>
+            <!-- TODO: salvar filme como favorito -->
+            <p>Save</p>
+        {/each}
+    </div>
 {:catch error}
     <p style="color: red">{error.message}</p>
 {/await}
 
 <style>
-.table{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr min-content;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
+    .table {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr min-content;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
 </style>
