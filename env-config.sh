@@ -4,6 +4,7 @@
 echo "Configurando backend..."
 echo "Instalando python..."
 pwd
+sudo apt-get update
 sudo apt-get install python3.6
 sudo apt-get install python3-pip
 sudo apt-get install python3-venv
