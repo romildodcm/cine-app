@@ -1,8 +1,10 @@
 <script>
+const API_URL = import.meta.env.VITE_API_URL;
+
 let promise = getMovies();
 async function getMovies() {
     const res = await fetch(
-        `http://localhost:8000/movies`
+        `${API_URL}:8000/movies`
     );
     const text = await res.json();
     if (res.ok) {
