@@ -29,7 +29,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 # nvm list-remote
-nvm install v18.14.0
+nvm install v16.19.0
 node -v
 echo "Instalando dependencias frontend..."
 pwd
