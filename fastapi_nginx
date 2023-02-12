@@ -49,6 +49,6 @@ server {
     listen 80;
     server_name 100.24.235.152;
     location / {
-        proxy_pass http://127.0.0.1:5174;
+        proxy_pass http://127.0.0.1:5173;
     }
 }

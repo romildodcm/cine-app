@@ -47,7 +47,7 @@ public_ip=$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 
 echo "IP publico: $public_ip"
 
 echo "Criando arquivo .env para o frontend..."
-echo "API_URL=http://$public_ip" > ./frontend/.env
+echo "VITE_API_URL=http://$public_ip" > ./frontend/.env
 
 echo "Configurando endereço IP para o NGINX..."
 filename="fastapi_nginx"
