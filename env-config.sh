@@ -57,7 +57,6 @@ sed -i "s/server_name.*;/server_name $public_ip;/g" $filename
 echo "Configurando nginx..."
 pwd
 sudo cp ./fastapi_nginx /etc/nginx/sites-available/
-sudo ln -s /etc/nginx/sites-available/fastapi_nginx /etc/nginx/sites-enabled
 sudo service nginx restart
 
 # tornando scripts executaveis
