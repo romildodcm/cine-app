@@ -36,24 +36,27 @@ pwd
 npm install
 cd ..
 
+# https://lcalcagni.medium.com/deploy-your-fastapi-to-aws-ec2-using-nginx-aa8aa0d85ec7
+echo "Instalando nginx..."
+pwd
+sudo apt install nginx
+
 echo "Identificando IP publico..."
 pwd
 public_ip=$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')
 echo "IP publico: $public_ip"
 
 echo "Criando arquivo .env para o frontend..."
-echo "API_URL=http://$ip" > ./frontend/.env
+echo "API_URL=http://$public_ip" > ./frontend/.env
 
 echo "Configurando endereço IP para o NGINX..."
 filename="fastapi_nginx"
 sed -i "s/server_name.*;/server_name $public_ip;/g" $filename
 
 # https://lcalcagni.medium.com/deploy-your-fastapi-to-aws-ec2-using-nginx-aa8aa0d85ec7
-echo "Instalando nginx..."
-pwd
-sudo apt install nginx
 echo "Configurando nginx..."
-cp ./fastapi_nginx /etc/nginx/sites-available/
+pwd
+sudo cp ./fastapi_nginx /etc/nginx/sites-available/
 sudo ln -s /etc/nginx/sites-available/fastapi_nginx /etc/nginx/sites-enabled
 sudo service nginx restart
 
