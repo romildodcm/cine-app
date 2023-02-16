@@ -6,6 +6,8 @@
 # ssh keys
 *.pem
 
+README.md
+img/
 # env files
 .env
 /infos
